@@ -21,9 +21,5 @@ app = Flask(__name__)
 db = init_connect_engine()
 from app import routes
 
-conn = db.connect()
-results = conn.execute("Select * from Parks")
-# we do this because results is an object, this is just a quick way to verify the content
-print([x for x in results])
-conn.close()
+
 

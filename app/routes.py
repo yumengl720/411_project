@@ -37,17 +37,22 @@ def update(task_id):
     return jsonify(result)
 
 
-@app.route("/create", methods=['POST'])
+
+
+
+@app.route('/', methods=['GET','POST'])
+def index():
+    items = db_helper.fetch_park('')
+    if request.method == 'POST':
+        variable = request.form['variable']
+        items = db_helper.fetch_park(variable)
+    items_c = db_helper.fetch_comments()
+    return render_template("index.html", items=items, items_comment=items_c)
+
+@app.route("/insert", methods=['POST'])
 def create():
     """ recieves post requests to add new task """
     data = request.get_json()
-    db_helper.insert_new_task(data['description'])
+    db_helper.insert_new_task("abli", 4, "demo comments")
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
-
-
-@app.route("/")
-def homepage():
-    """ returns rendered homepage """
-    items = db_helper.fetch_todo()
-    return render_template("index.html", items=items)

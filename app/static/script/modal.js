@@ -31,7 +31,9 @@ $(document).ready(function () {
             url: tID ? '/edit/' + tID : '/create',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'description': $('#task-modal').find('.form-control').val()
+                'park_code':$('#task-modal').find('.form-control').val(),
+                'rating': $('#task-modal').find('.form-control').val(),
+                'comment': $('#task-modal').find('.form-control').val(),
             }),
             success: function (res) {
                 console.log(res.response)
