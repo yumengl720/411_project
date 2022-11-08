@@ -269,44 +269,82 @@
             integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='script/modal.js') }}"></script> -->
       </section>
-      
-      
-      
-      
-      
+
+
+
+
       <section id="results">
         <body>
-    
+         <div class = "row">
+            <div class = "column left">
+                <main role="main" class="container extra-bottom">
+                    <h2 class="mt-5">Query 1</h2>
+                    <br><br>
+                    <!-- <p><mark>Do it now.</mark></p > -->
+                    <form method="POST">
+                  </form>
+                  </main>
+          
+                  <!--Todo Table-->
+                  <div class="container table-responsive">          
+                  <table class="table">
+                      <thead>
+                      <tr>
+          
+                          <th class="park_code">Park Code</th>
+                          <th class="avg_rating">Avg Ratings</th>
+              
+                      </tr>
+                      </thead>
+              
+                      <tbody>
+                      {% for item in item_query1 %}
+                          <tr>
+                              <td>{{item.park_code}}</td>
+                              <td>{{item.avg_rating}}</td>             
+                          </tr>
+                      {% endfor %}
+                      
+                      </tbody>
+                  </table>
+            </div>
+
+
+        </div class = "column right">
         <main role="main" class="container extra-bottom">
-          <h2 class="mt-5">Query 1</h2>
-          <br><br>
-          <!-- <p><mark>Do it now.</mark></p > -->
-          <form method="POST">
-        </form>
-        </main>
-
-        <!--Todo Table-->
-        <div class="container table-responsive">          
-        <table class="table">
-            <thead>
-            <tr>
-
-                <th class="park_code">Park Code</th>
-                <th class="avg_rating">Avg Ratings</th>
-    
-            </tr>
-            </thead>
-    
-            <tbody>
-            {% for item in item_query1 %}
-                <tr>
-                    <td>{{item.park_code}}</td>
-                    <td>{{item.avg_rating}}</td>             
-                </tr>
-            {% endfor %}
-            
-            </tbody>
-        </table>
+            <h2 class="mt-5">Query 2</h2>
+            <br><br>
+            <!-- <p><mark>Do it now.</mark></p > -->
+            <form method="POST">
+          </form>
+          </main>
+  
+          <!--Todo Table-->
+          <div class="container table-responsive">          
+          <table class="table">
+              <thead>
+              <tr>
+  
+                  <th class="event_id">Event ID</th>
+                  <th class="park_name">Park Name</th>
+                  <th class="comment_cnt">Comment Counts</th>
+      
+              </tr>
+              </thead>
+      
+              <tbody>
+              {% for item in item_query2 %}
+                  <tr>
+                      <td>{{item.event_id}}</td>
+                      <td>{{item.park_name}}</td>  
+                      <td>{{item.comment_cnt}}</td>            
+                  </tr>
+              {% endfor %}
+              
+              </tbody>
+          </table>
+         </div>   
+        </div>
         </div>
       </body>     
     </section>

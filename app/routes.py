@@ -53,7 +53,8 @@ def index():
         items = db_helper.fetch_park(variable)
     items_c = db_helper.fetch_comments()
     item_query1 = db_helper.advance_query1()
-    return render_template("index.html", items=items, items_comment=items_c, item_query1 = item_query1)
+    item_query2 = db_helper.advance_query2()
+    return render_template("index.html", items=items, items_comment=items_c, item_query1 = item_query1, item_query2 = item_query2)
 
 @app.route("/insert", methods=['POST'])
 def create():
