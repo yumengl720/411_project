@@ -70,30 +70,19 @@ def find_comments(task_id: int) -> None:
 
 def insert_new_task(park_code: str,rating: int, text: str) ->  int:
     conn = db.connect()
-    query = 'Insert Into Comments (user_id, park_code, rating, comments, update_time) VALUES (1,"{}",{}, "{}");'.format(
+    #     time = datetime.now()
+    query = 'Insert Into Comments (user_id, park_code, rating, comments) VALUES (1,"{}",{}, "{}");'.format(
         park_code, rating, text)
     conn.execute(query)
-    query_results = conn.execute("Select LAST_INSERT_ID();")
-    query_results = [x for x in query_results]
-    task_id = query_results[0][0]
+    # query_results = conn.execute("Select LAST_INSERT_ID();")
+    # query_results = [x for x in query_results]
+    # task_id = query_results[0][0]
     conn.close()
-    return task_id
-
-# def insert_comments(comment: str, parkcode: str, rating: int):
-#     conn = db.connect()
-#     cursor = conn.cursor()
-#     cursor.execute("select * from Comments")
-#     results = cursor.fetchall()
-#     userid = len(results)
-#     time = datetime.now()
-#     query = 'Insert Into Comment`s (user_id, park_code, rating, comments, update_time) 
-#             VALUES ("{userid}");'.format(text, "Todo")
-
-
+    #return task_id
 
 def remove_task_by_id(task_id: int) -> None:
     """ remove entries based on task ID """
     conn = db.connect()
-    query = 'Delete From tasks where id={};'.format(task_id)
+    query = 'Delete From Comments where id={};'.format(task_id)
     conn.execute(query)
     conn.close()

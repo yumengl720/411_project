@@ -37,9 +37,9 @@ $(document).ready(function () {
 
     $('#submit-task').click(function () {
         const cID = $('#task-form-display').attr('commentID');
-        console.log($('#task-modal').find('.form-control1').val())
-        console.log($('#task-modal').find('.form-control2').val())
-        console.log($('#task-modal').find('.form-control3').val())
+        // console.log($('#task-modal').find('.form-control1').val())
+        // console.log($('#task-modal').find('.form-control2').val())
+        // console.log($('#task-modal').find('.form-control3').val())
         $.ajax({
             type: 'POST',
             url: cID ? '/edit/' + cID : '/insert',
