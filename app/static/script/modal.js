@@ -3,37 +3,51 @@ $(document).ready(function () {
     // show modal
     $('#task-modal').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget) // Button that triggered the modal
-        const taskID = button.data('source') // Extract info from data-* attributes
-        const content = button.data('content') // Extract info from data-* attributes
+        const commentID = button.data('source') // Extract info from data-* attributes
+        const park = button.data('park') // Extract info from data-* attributes
+        const rating = button.data('rating')
+        const comments = button.data('comments')
 
         const modal = $(this)
-        if (taskID === 'New Task') {
-            modal.find('.modal-title').text(taskID)
-            $('#task-form-display').removeAttr('taskID')
+        if (commentID === 'New Comments') {
+            modal.find('.modal-title').text(commentID)
+            $('#task-form-display').removeAttr('commentID')
         } else {
-            modal.find('.modal-title').text('Edit Task ' + taskID)
-            $('#task-form-display').attr('taskID', taskID)
+            modal.find('.modal-title').text('Edit Task ' + commentID)
+            $('#task-form-display').attr('commentID', commentID)
         }
 
-        if (content) {
-            modal.find('.form-control').val(content);
+        if (park) {
+            modal.find('.form-control1').val(park);
         } else {
-            modal.find('.form-control').val('');
+            modal.find('.form-control1').val('');
+        }
+        if (rating) {
+            modal.find('.form-control2').val(rating);
+        } else {
+            modal.find('.form-control2').val('');
+        }
+        if (comments) {
+            modal.find('.form-control3').val(comments);
+        } else {
+            modal.find('.form-control3').val('');
         }
     })
 
 
     $('#submit-task').click(function () {
-        const tID = $('#task-form-display').attr('taskID');
-        console.log($('#task-modal').find('.form-control').val())
+        const cID = $('#task-form-display').attr('commentID');
+        console.log($('#task-modal').find('.form-control1').val())
+        console.log($('#task-modal').find('.form-control2').val())
+        console.log($('#task-modal').find('.form-control3').val())
         $.ajax({
             type: 'POST',
-            url: tID ? '/edit/' + tID : '/create',
+            url: cID ? '/edit/' + cID : '/insert',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'park_code':$('#task-modal').find('.form-control').val(),
-                'rating': $('#task-modal').find('.form-control').val(),
-                'comment': $('#task-modal').find('.form-control').val(),
+                'park_code':$('#task-modal').find('.form-control1').val(),
+                'rating': $('#task-modal').find('.form-control2').val(),
+                'comments': $('#task-modal').find('.form-control3').val(),
             }),
             success: function (res) {
                 console.log(res.response)
@@ -63,21 +77,23 @@ $(document).ready(function () {
     $('.state').click(function () {
         const state = $(this)
         const tID = state.data('source')
-        const new_state
-        if (state.text() === "In Progress") {
-            new_state = "Complete"
-        } else if (state.text() === "Complete") {
-            new_state = "Todo"
-        } else if (state.text() === "Todo") {
-            new_state = "In Progress"
-        }
+        // const new_state=''
+        // if (state.text() === "In Progress") {
+        //     new_state = "Complete"
+        // } else if (state.text() === "Complete") {
+        //     new_state = "Todo"
+        // } else if (state.text() === "Todo") {
+        //     new_state = "In Progress"
+        // }
 
         $.ajax({
             type: 'POST',
             url: '/edit/' + tID,
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'status': new_state
+                'park_code':$('#task-modal').find('.form-control1').val(),
+                'rating': $('#task-modal').find('.form-control2').val(),
+                'comments': $('#task-modal').find('.form-control3').val(),
             }),
             success: function (res) {
                 console.log(res)

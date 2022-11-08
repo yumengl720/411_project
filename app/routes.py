@@ -19,17 +19,22 @@ def delete(task_id):
 @app.route("/edit/<int:task_id>", methods=['POST'])
 def update(task_id):
     """ recieved post requests for entry updates """
-
+    old_record = db_helper.find_comments(task_id)
     data = request.get_json()
-
     try:
-        if "status" in data:
-            db_helper.update_status_entry(task_id, data["status"])
-            result = {'success': True, 'response': 'Status Updated'}
-        elif "description" in data:
-            db_helper.update_task_entry(task_id, data["description"])
-            result = {'success': True, 'response': 'Task Updated'}
-        else:
+        response1,response2,response3 = '','',''
+        if (data["park_code"]!=old_record[0]):
+            db_helper.update_park_code(task_id, data["park_code"])
+            response1 = "Park Code Updated"
+        if (data["rating"]!=old_record[1]):
+            db_helper.update_rating(task_id, data["rating"])
+            response2 = 'Rating Updated'
+        if (data["comments"]!=old_record[2]):
+            db_helper.update_comments(task_id, data["comments"])
+            response3 = 'comments Updated'
+        
+        result = {'success': True, 'response': response1 + " " + response2 + " " + response3}
+        if (not response1 and not response2 and not response3):
             result = {'success': True, 'response': 'Nothing Updated'}
     except:
         result = {'success': False, 'response': 'Something went wrong'}
@@ -53,6 +58,6 @@ def index():
 def create():
     """ recieves post requests to add new task """
     data = request.get_json()
-    db_helper.insert_new_task("abli", 4, "demo comments")
+    db_helper.insert_new_task(data['park_code'], data['rating'], data['comments'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)

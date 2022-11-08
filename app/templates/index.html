@@ -86,15 +86,15 @@
             <div class="modal-body">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Park Code</span>
-                    <input type="text" class="form-control" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Ratings</span>
-                    <input type="number" class="form-control" placeholder="rating" aria-label="task-name" aria-describedby="basic-addon1">
+                    <input type="number" class="form-control2" placeholder="rating" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Comments</span>
-                    <input type="text" class="form-control" placeholder="comment" aria-label="task-name" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control3" placeholder="comments" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
             </div>
             <div class="modal-footer">
@@ -112,11 +112,6 @@
     <table class="table">
         <thead>
         <tr>
-            <!-- <th class="task-id">#</th>
-            <th class="task">Task Name</th>
-            <th class="status">Status</th>
-            <th class="update">Edit</th>
-            <th class="update">Remove</th> -->
             <th class="id">#</th>
             <th class="park_name">Park Name</th>
             <th class="contact">Contact</th>
@@ -134,7 +129,7 @@
                 <td>{{item.contact}}</td>
                
 
-                {% if item.status == "In Progress" %}
+                <!-- {% if item.status == "In Progress" %}
                     <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
                 {%endif%}
                 {% if item.status == "Todo" %}
@@ -142,7 +137,7 @@
                 {%endif%}
                 {% if item.status == "Complete" %}
                     <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
+                {%endif%} -->
                 
                 <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" data-content="{{item.task}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
 
@@ -195,7 +190,7 @@
             
             <!-- Button trigger modal -->
             <div style="text-align: right;">
-            <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Task">Add Comments</button>
+            <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Comments">Add Comments</button>
             </div>
     
             
@@ -209,8 +204,16 @@
     
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="task-form-display">Comment</span>
-                        <input type="text" class="form-control" placeholder="Description of task" aria-label="task-name" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="task-form-display">Park Code</span>
+                        <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="task-form-display">Ratings</span>
+                        <input type="number" class="form-control2" placeholder="rating" aria-label="task-name" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="task-form-display">Comments</span>
+                        <input type="text" class="form-control3" placeholder="comment" aria-label="task-name" aria-describedby="basic-addon1">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -223,7 +226,7 @@
     
         </div>
     
-        <!--Todo Table-->
+        <!--Comment Table-->
         <div class="container table-responsive">          
         <table class="table">
             <thead>
@@ -245,11 +248,11 @@
                     <td>{{item.park_code}}</td>
                     <td>{{item.rating}}</td>
                     <td>{{item.comments}}</td>
-                   
-    
-    
                     
-                    <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" data-content="{{item.task}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+                    <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" 
+                        data-park="{{item.park_code}}"
+                        data-rating="{{item.rating}}"
+                        data-comments="{{item.comments}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
     
                     <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
                 </tr>

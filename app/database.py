@@ -38,21 +38,39 @@ def fetch_comments() -> dict:
 
 
 
-def update_task_entry(task_id: int, text: str) -> None:
+def update_park_code(task_id: int, text: str) -> None:
     conn = db.connect()
-    query = 'Update tasks set task = "{}" where id = {};'.format(text, task_id)
+    query = 'Update Comments set park_code = "{}" where id = {};'.format(text, task_id)
+    conn.execute(query)
+    conn.close()
+def update_rating(task_id: int, rating: int) -> None:
+    conn = db.connect()
+    query = 'Update Comments set rating = {} where id = {};'.format(rating, task_id)
     conn.execute(query)
     conn.close()
 
-def update_status_entry(task_id: int, text: str) -> None:
+def update_comments(task_id: int, comments: str) -> None:
     conn = db.connect()
-    query = 'Update tasks set status = "{}" where id = {};'.format(text, task_id)
+    query = 'Update Comments set comments = "{}" where id = {};'.format(comments, task_id)
     conn.execute(query)
     conn.close()
-def insert_new_task(park_code: str,rating: int, text: str) ->  int:
-    time = datetime.now()
+
+def find_comments(task_id: int) -> None:
     conn = db.connect()
-    query = 'Insert Into Comments (user_id, park_code, rating, comments, update_time) VALUES (1,"{}",{}, "{}", time);'.format(
+    query = 'SELECT * FROM Comments  where id = {};'.format(task_id)
+    
+    query_results = conn.execute(query)
+    query_results = [x for x in query_results]
+    old_park_code = query_results[0][2]
+    old_rating = query_results[0][3]
+    old_comments = query_results[0][4]
+    conn.close()
+    return ([old_park_code,old_rating,old_comments])
+
+
+def insert_new_task(park_code: str,rating: int, text: str) ->  int:
+    conn = db.connect()
+    query = 'Insert Into Comments (user_id, park_code, rating, comments, update_time) VALUES (1,"{}",{}, "{}");'.format(
         park_code, rating, text)
     conn.execute(query)
     query_results = conn.execute("Select LAST_INSERT_ID();")
