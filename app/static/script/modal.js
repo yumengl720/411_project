@@ -45,7 +45,7 @@ $(document).ready(function () {
             url: cID ? '/edit/' + cID : '/insert',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'park_code':$('#task-modal').find('.form-control1').val(),
+                 'park_code':$('#task-modal').find('.form-control1').val(),
                 'rating': $('#task-modal').find('.form-control2').val(),
                 'comments': $('#task-modal').find('.form-control3').val(),
             }),

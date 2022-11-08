@@ -87,6 +87,11 @@ html {
     display: flex;
     flex-direction: column;
   }
+  #results{
+    background: goldenrod;
+    display: flex;
+    flex-direction: column;
+  }
 
 
 

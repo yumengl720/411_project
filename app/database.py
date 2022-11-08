@@ -68,7 +68,7 @@ def find_comments(task_id: int) -> None:
     return ([old_park_code,old_rating,old_comments])
 
 
-def insert_new_task(park_code: str,rating: int, text: str) ->  int:
+def insert_new_task(park_code: str,rating: int, text: str) ->  None:
     conn = db.connect()
     #     time = datetime.now()
     query = 'Insert Into Comments (user_id, park_code, rating, comments) VALUES (1,"{}",{}, "{}");'.format(
@@ -86,3 +86,30 @@ def remove_task_by_id(task_id: int) -> None:
     query = 'Delete From Comments where id={};'.format(task_id)
     conn.execute(query)
     conn.close()
+
+def advance_query1() -> dict:
+    conn = db.connect()
+    query_results = conn.execute("SELECT park_code, AVG(rating) AS avg_rating FROM Comments GROUP BY park_code HAVING AVG(rating) >3 and park_code IN (SELECT park_code FROM Parks WHERE park_name NOT IN (SELECT DISTINCT park_name FROM Events)) UNION SELECT park_code, AVG(rating)AS avg_rating FROM Comments GROUP BY park_code HAVING AVG(rating) >2 and park_code IN (SELECT park_code FROM Parks WHERE park_name IN (SELECT DISTINCT park_name FROM Events));").fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "park_code": result[0],
+            "avg_rating": result[1],
+        }
+        query_list.append(item)
+    return query_list
+
+def advance_query2() -> dict:
+    conn = db.connect()
+    query_results = conn.execute("SELECT event_id, park_name, comment_cnt FROM (SELECT park_code, COUNT(*) AS comment_cnt FROM Comments WHERE YEAR(update_time) >=2021 GROUP BY park_code HAVING AVG(rating) >3 ORDER BY  comment_cnt DESC) a JOIN Parks USING (park_code) JOIN Events USING (park_name) WHERE date_start LIKE '2022-10%' or date_end LIKE '2022-11%';").fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "event_id": result[0],
+            "park_name": result[1],
+            "comment_cnt": result[2],
+        }
+        query_list.append(item)
+    return query_list

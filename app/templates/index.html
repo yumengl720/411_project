@@ -7,20 +7,17 @@
       </div>
       <nav>
         <ul>
-          <li><a href=" " class="scroll">Home</a ></li>
+          <li><a href="#home" class="scroll">Home</a ></li>
           <li><a href="#comments" class="scroll">Comments</a ></li>
+            <li><a href="#results" class="scroll">Results of SQL Query</a ></li>
           
         </ul>
       </nav>
     </div>
   </header>
+
+
 <section id="home">
-
-  
-  
-
-
-
     <head>
         <title>National Parks</title>
 
@@ -70,9 +67,9 @@
     <div class="container">    
         
         <!-- Button trigger modal -->
-        <div style="text-align: right;">
+        <!-- <div style="text-align: right;">
         <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Task">Add Task</button>
-        </div>
+        </div> -->
 
         
         <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
@@ -84,6 +81,14 @@
             </div>
 
             <div class="modal-body">
+                 <!-- <div class="input-group mb-3"> 
+                    <span class="input-group-text" id="task-form-display">Park Code</span>
+                    <select name="park_code" data-live-search="true" id="park_code" class="form-control" title="Select Park"> 
+                    {% for row in items_comment %}
+                    <option value="{{row.park_code}}">{{row.park_code}}</option>
+                    {% endfor %}
+                    </select>
+                </div> -->
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Park Code</span>
                     <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1">
@@ -112,11 +117,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="id">#</th>
+            <th class="id">id</th>
             <th class="park_name">Park Name</th>
             <th class="contact">Contact</th>
-            <th class="update">Edit</th>
-            <th class="update">Remove</th>    
+ 
 
         </tr>
         </thead>
@@ -126,22 +130,7 @@
             <tr>
                 <td>{{item.id}}</td>
                 <td>{{item.park_name}}</td>
-                <td>{{item.contact}}</td>
-               
-
-                <!-- {% if item.status == "In Progress" %}
-                    <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Todo" %}
-                    <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Complete" %}
-                    <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%} -->
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" data-content="{{item.task}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+                <td>{{item.contact}}</td>               
             </tr>
         {% endfor %}
         
@@ -167,7 +156,7 @@
 </section>
 
     <section id="comments">
-        <h2 class="mt-5">Comments</h2>
+        <!-- <h2 >Comments</h2> -->
         <head>
             <title>National Parks Comments</title>
     
@@ -184,8 +173,11 @@
         </head>
     
         <body>
-        
-    
+        <!-- <h2 class="mt-5">Comments</h2> -->
+        <!-- <h2 align = "center">Comments</h2> -->
+        <main role="main" class="container extra-bottom">
+            <h2 class="mt-5">Comments</h2>
+          </main>
         <div class="container">    
             
             <!-- Button trigger modal -->
@@ -278,5 +270,44 @@
         <script src="{{ url_for('static', filename='script/modal.js') }}"></script> -->
       </section>
       
+      
+      
+      
+      
+      <section id="results">
+        <body>
+    
+        <main role="main" class="container extra-bottom">
+          <h2 class="mt-5">Query 1</h2>
+          <br><br>
+          <!-- <p><mark>Do it now.</mark></p > -->
+          <form method="POST">
+        </form>
+        </main>
 
+        <!--Todo Table-->
+        <div class="container table-responsive">          
+        <table class="table">
+            <thead>
+            <tr>
+
+                <th class="park_code">Park Code</th>
+                <th class="avg_rating">Avg Ratings</th>
+    
+            </tr>
+            </thead>
+    
+            <tbody>
+            {% for item in item_query1 %}
+                <tr>
+                    <td>{{item.park_code}}</td>
+                    <td>{{item.avg_rating}}</td>             
+                </tr>
+            {% endfor %}
+            
+            </tbody>
+        </table>
+        </div>
+      </body>     
+    </section>
 </html>
