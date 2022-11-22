@@ -109,11 +109,15 @@ body {
     background-color: #f5f5f5;
 }
 
-hr {
-    width: 50%;
+h2 {
     margin: auto;
+    text-align: center;
+    width: 60%;
 }
 
+#sort{
+  text-align: center;
+}
 
 .table td {
     text-align: center;

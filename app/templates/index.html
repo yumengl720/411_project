@@ -9,8 +9,9 @@
         <ul>
           <li><a href="#home" class="scroll">Home</a ></li>
           <li><a href="#comments" class="scroll">Comments</a ></li>
-            <li><a href="#results" class="scroll">Results of SQL Query</a ></li>
-          
+          <li><a href="#results" class="scroll">Results of SQL Query</a ></li>
+          <li><a href="{{ url_for('login') }}" class="btn btn-primary">Login</a></li>
+        
         </ul>
       </nav>
     </div>
@@ -19,8 +20,11 @@
 
 <section id="home">
     <head>
+        <!-- <img src="https://www.nps.gov/common/uploads/structured_data/3C7D2FBB-1DD8-B71B-0BED99731011CFCE.jpg" 
+alt="Cheetah!" /> -->
+        <br></br><br></br>
         <title>National Parks</title>
-
+        
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -38,13 +42,79 @@
     <main role="main" class="container extra-bottom">
       <h2 class="mt-5">National Parks in The USA</h2>
       <br><br>
+      
       <!-- <p><mark>Do it now.</mark></p > -->
       <form method="POST">
         <label>Search</label>
-
-        <input type="text" name="variable" autocomplete="off">
         
+       
+        <input type="text" name="variable1" autocomplete="off">
+        
+        <select name="variable2" id="state" >
+            <option value="" selected="selected">Select a State</option>
+            <option value="AL">AL</option>
+            <option value="AK">AK</option>
+            <option value="AR">AR</option>
+            <option value="AZ">AZ</option>
+            <option value="CA">CA</option>
+            <option value="CO">CO</option>
+            <option value="CT">CT</option>
+            <option value="DC">DC</option>
+            <option value="DE">DE</option>
+            <option value="FL">FL</option>
+            <option value="GA">GA</option>
+            <option value="HI">HI</option>
+            <option value="IA">IA</option>
+            <option value="ID">ID</option>
+            <option value="IL">IL</option>
+            <option value="IN">IN</option>
+            <option value="KS">KS</option>
+            <option value="KY">KY</option>
+            <option value="LA">LA</option>
+            <option value="MA">MA</option>
+            <option value="MD">MD</option>
+            <option value="ME">ME</option>
+            <option value="MI">MI</option>
+            <option value="MN">MN</option>
+            <option value="MO">MO</option>
+            <option value="MS">MS</option>
+            <option value="MT">MT</option>
+            <option value="NC">NC</option>
+            <option value="NE">NE</option>
+            <option value="NH">NH</option>
+            <option value="NJ">NJ</option>
+            <option value="NM">NM</option>
+            <option value="NV">NV</option>
+            <option value="NY">NY</option>
+            <option value="ND">ND</option>
+            <option value="OH">OH</option>
+            <option value="OK">OK</option>
+            <option value="OR">OR</option>
+            <option value="PA">PA</option>
+            <option value="RI">RI</option>
+            <option value="SC">SC</option>
+            <option value="SD">SD</option>
+            <option value="TN">TN</option>
+            <option value="TX">TX</option>
+            <option value="UT">UT</option>
+            <option value="VT">VT</option>
+            <option value="VA">VA</option>
+            <option value="WA">WA</option>
+            <option value="WI">WI</option>
+            <option value="WV">WV</option>
+            <option value="WY">WY</option>
+          </select>
  
+          <select name="variable3" id="sort" >
+            <option value="" selected="selected">Sort</option>
+            <option value="t1.park_name asc">A-Z</option>
+            <option value="t1.park_name desc">Z-A</option>
+            <option value="t2.avg_rating desc">Rating(from high to low)</option>
+            <option value="t2.avg_rating asc">Rating(from low to high)</option>
+            <option value="t2.comments_cnt desc">Number of Comments(from large to small)</option>
+            <option value="t2.comments_cnt asc">Number of Comments(from small to large)</option>
+          </select>
+
         <!-- <label>&nbsp&nbsp&nbsp Location</label>
         <input type="Location" name="Location">
         <br><br>
@@ -58,7 +128,7 @@
         <br><br>
        
         <input type="submit">
- 
+
     </form>
 
     </main>
@@ -118,8 +188,9 @@
         <thead>
         <tr>
             <th class="id">id</th>
-            <th class="park_name">Park Name</th>
-            <th class="contact">Contact</th>
+            <th class="image">Image</th>
+            <th class="park_name">Information</th>
+            <!-- <th class="contact">Contact</th> -->
  
 
         </tr>
@@ -129,8 +200,16 @@
         {% for item in items %}
             <tr>
                 <td>{{item.id}}</td>
-                <td>{{item.park_name}}</td>
-                <td>{{item.contact}}</td>               
+                <!-- <td><a href={{item.image_url}}></a></td> -->
+                <td><img src={{item.image_url}} alt="" border=0 height=120 width=180></img></th>
+                <td>
+                    <a href={{item.url}} target="_blank">{{item.park_name}}</a>
+                    <br></br>
+                    {{item.address}}
+                    <br></br>
+                    {{item.contact}}
+                </td>   
+                <!-- <td>{{item.contact}}</td>                -->
             </tr>
         {% endfor %}
         
@@ -346,4 +425,9 @@
 
       </body>     
     </section>
+
+    
+   
+    
+
 </html>
