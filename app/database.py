@@ -11,7 +11,7 @@ def fetch_park(text1:str,text2:str,text3:str) -> dict:
     v2 = f"%{text2}%"
     v3 = text3.replace("'","")
     v3 = v3.replace('"',"")
-    query = """SELECT t1.id, t1.image_url, t1.park_name, t1.address, t1.entrance_fee,t1.phone_number,t1.url,t1.state_code,t2.avg_rating,t2.comments_cnt
+    query = """SELECT t1.id, t1.image_url, t1.park_name, t1.address, t1.entrance_fee, t1.phone_number, t1.url, t1.state_code, t2.avg_rating, t2.comments_cnt, t1.park_code
                                     FROM (SELECT * from Parks where park_name LIKE (%s) and state_code LIKE (%s)) as t1, (SELECT AVG(rating) as avg_rating,COUNT(comments) as comments_cnt,park_code from Comments group by park_code) as t2
                                     WHERE t1.park_code = t2.park_code
                                     ORDER BY %s"""
@@ -39,6 +39,7 @@ def fetch_park(text1:str,text2:str,text3:str) -> dict:
             "state_code": result[7],
             "avg_rating": result[8],
             "comments_cnt": result[9],
+            "park_code": result[10]
         }
         park_list.append(item)
 

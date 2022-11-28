@@ -161,7 +161,14 @@ alt="Cheetah!" /> -->
                 </div> -->
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Park Code</span>
-                    <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1">
+                    <select class="form-control1" aria-label="task-name" aria-describedby="basic-addon1">
+                        <option value="" selected="selected">Select Park Code</option>
+                        {% for item in items %}
+                            <option value="{{item.park_code}}">{{item.park_code}}</option>
+                        {% endfor %}
+                      
+                      </select>
+                    <!-- <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1"> -->
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Ratings</span>

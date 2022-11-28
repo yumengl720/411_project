@@ -83,7 +83,8 @@ def update(task_id):
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    items = db_helper.fetch_park('','','')
+    if request.method == 'GET':
+        items = db_helper.fetch_park('','','')
     if request.method == 'POST':
         variable1 = request.form['variable1']
         variable2 = request.form['variable2']
