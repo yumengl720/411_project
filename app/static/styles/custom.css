@@ -112,7 +112,8 @@ body {
 h2 {
     margin: auto;
     text-align: center;
-    width: 60%;
+    width: 100%;
+    /* width: 60%; */
 }
 
 #sort{
@@ -134,11 +135,14 @@ h2 {
 /* bootstrap modifications */
 .container {
     width: auto;
-    max-width: 1800px;
+    /* max-width: 1800px; */
+    max-width: 2800px;
     padding: 0 15px;
     overflow: hidden;
     max-height: 1600px;
+    overflow-y:auto;
 }
+
 
 .extra-bottom {
     padding-bottom: 2em;
@@ -160,3 +164,53 @@ h2 {
 .update {
     width: 10%;
 }
+.bolded { font-weight: bold; }
+
+.modal-content {
+  background-color: #fefefe;
+  /* margin: 15% auto;  */
+  /* padding: 20px; */
+  border: 1px solid #888;
+  width: 180%; 
+  /* overflow-y:auto;
+  clear: both;
+  display: block;
+  overflow:hidden;
+  text-overflow: clip;
+  */
+  white-space: nowrap;
+  overflow: hidden;
+
+
+
+}
+
+.form-control3{
+  background-color: #fefefe;
+   /* 15% from the top and centered */
+  /* padding: 20px; */
+  border: 1px solid #888;
+   /* Could be more or less, depending on screen size */
+  
+  height: 300px;
+
+  width:180%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  margin-top: 0px;
+
+
+}
+
+.form-control2{
+  background-color: #fefefe;
+   /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 180%; /* Could be more or less, depending on screen size */
+  overflow-y:auto;
+  height: 16px;
+  clear: both;
+}
+

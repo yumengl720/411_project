@@ -10,8 +10,19 @@
           <li><a href="#home" class="scroll">Home</a ></li>
           <li><a href="#comments" class="scroll">Comments</a ></li>
           <li><a href="#results" class="scroll">Results of SQL Query</a ></li>
-          <li><a href="{{ url_for('login') }}" class="btn btn-primary">Login</a></li>
+          <!-- <li><a href="{{ url_for('login') }}" class="btn btn-primary">Login</a></li> -->
         
+          <li><ul class="btn btn-primary">
+            {% if login1%}
+              <li><a href="{{ url_for('logout') }}">Logout<span class="sr-only">(current)</span></a></li>
+            {% else %}
+              <li><a href="{{ url_for('login') }}">Login <span class="sr-only">(current)</span></a></li>
+            {% endif %}
+        </ul></li>
+
+
+
+
         </ul>
       </nav>
     </div>
@@ -151,25 +162,18 @@ alt="Cheetah!" /> -->
             </div>
 
             <div class="modal-body">
-                 <!-- <div class="input-group mb-3"> 
-                    <span class="input-group-text" id="task-form-display">Park Code</span>
-                    <select name="park_code" data-live-search="true" id="park_code" class="form-control" title="Select Park"> 
-                    {% for row in items_comment %}
-                    <option value="{{row.park_code}}">{{row.park_code}}</option>
-                    {% endfor %}
-                    </select>
-                </div> -->
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="task-form-display">Park Code</span>
-                    <select class="form-control1" aria-label="task-name" aria-describedby="basic-addon1">
-                        <option value="" selected="selected">Select Park Code</option>
-                        {% for item in items %}
-                            <option value="{{item.park_code}}">{{item.park_code}}</option>
+                    <span class="input-group-text" id="task-form-display">Park Name</span>
+                    <select class="form-control1" aria-label="task-name" aria-describedby="basic-addon1"> 
+                        <option value="" selected="selected">Select Park Name</option>
+                        {% for item in item_park %}
+                            <option value="{{item.park_name}}">{{item.park_name}}</option>
                         {% endfor %}
                       
                       </select>
-                    <!-- <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1"> -->
+                    
                 </div>
+
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Ratings</span>
                     <input type="number" class="form-control2" placeholder="rating" aria-label="task-name" aria-describedby="basic-addon1">
@@ -205,19 +209,24 @@ alt="Cheetah!" /> -->
 
         <tbody>
         {% for item in items %}
-            <tr>
-                <td>{{item.id}}</td>
-                <!-- <td><a href={{item.image_url}}></a></td> -->
-                <td><img src={{item.image_url}} alt="" border=0 height=120 width=180></img></th>
-                <td>
-                    <a href={{item.url}} target="_blank">{{item.park_name}}</a>
-                    <br></br>
-                    {{item.address}}
-                    <br></br>
-                    {{item.contact}}
-                </td>   
-                <!-- <td>{{item.contact}}</td>                -->
-            </tr>
+        <tr>
+            <td>{{item.id}}</td>
+            <!-- <td><a href={{item.image_url}}></a></td> -->
+            <td><img src={{item.image_url}} alt="" border=0 height=120 width=180></img></th>
+            <td>
+                <a href={{item.url}} target="_blank">{{item.park_name}}</a>
+                <br></br>
+                <span class="bolded">Address: </span></th>{{item.address}}
+                <br></br>
+                <span class="bolded">Contact: </span></th>{{item.contact}}
+                <br></br>
+                <span class="bolded">Average Rating: </span></th>{{item.avg_rating}}
+                &nbsp;
+                <span class="bolded"># of Comments: </span></th>{{item.comments_cnt}} 
+                &nbsp; 
+                <span class="bolded"># of Events: </span></th>{{item.event_cnt}}
+            </td>   
+        </tr>
         {% endfor %}
         
         </tbody>
@@ -240,6 +249,8 @@ alt="Cheetah!" /> -->
     <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
 
 </section>
+
+{% if login1%}
 
     <section id="comments">
         <!-- <h2 >Comments</h2> -->
@@ -282,8 +293,8 @@ alt="Cheetah!" /> -->
     
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="task-form-display">Park Code</span>
-                        <input type="text" class="form-control1" placeholder="park code" aria-label="task-name" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="task-form-display">Park Name</span>
+                        <input type="text" class="form-control1" placeholder="park name" aria-label="task-name" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="task-form-display">Ratings</span>
@@ -309,8 +320,7 @@ alt="Cheetah!" /> -->
         <table class="table">
             <thead>
             <tr>
-                <th class="id">id</th>
-                <th class="park_code">Park Code</th>
+                <th class="name">Park Name</th>
                 <th class="rating">Rating</th>
                 <th class="comments">Comments</th>
                 <th class="update">Edit</th>
@@ -322,13 +332,12 @@ alt="Cheetah!" /> -->
             <tbody>
             {% for item in items_comment %}
                 <tr>
-                    <td>{{item.id}}</td>
-                    <td>{{item.park_code}}</td>
+                    <td>{{item.park_name}}</td>
                     <td>{{item.rating}}</td>
                     <td>{{item.comments}}</td>
                     
                     <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" 
-                        data-park="{{item.park_code}}"
+                        data-park="{{item.park_name}}"
                         data-rating="{{item.rating}}"
                         data-comments="{{item.comments}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
     
@@ -356,7 +365,7 @@ alt="Cheetah!" /> -->
         <script src="{{ url_for('static', filename='script/modal.js') }}"></script> -->
       </section>
 
-
+{%endif%}
 
 
       <section id="results">

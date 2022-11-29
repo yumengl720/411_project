@@ -6,25 +6,12 @@ from psycopg2 import sql
 
 def fetch_park(text1:str,text2:str,text3:str) -> dict:
     conn = db.connect()
-    # query_results = conn.execute("Select * from Parks where park_name LIKE %s  and state_code LIKE %s",('%' + text1 + '%',),('%' + text2 + '%',)).fetchall()
     v1 = f"%{text1}%"
     v2 = f"%{text2}%"
     v3 = text3.replace("'","")
     v3 = v3.replace('"',"")
-    query = """SELECT t1.id, t1.image_url, t1.park_name, t1.address, t1.entrance_fee, t1.phone_number, t1.url, t1.state_code, t2.avg_rating, t2.comments_cnt, t1.park_code
-                                    FROM (SELECT * from Parks where park_name LIKE (%s) and state_code LIKE (%s)) as t1, (SELECT AVG(rating) as avg_rating,COUNT(comments) as comments_cnt,park_code from Comments group by park_code) as t2
-                                    WHERE t1.park_code = t2.park_code
-                                    ORDER BY %s"""
-
-                                    
+    query = """CALL sort_park(%s,%s,%s)"""
     query_results = conn.execute(query,(v1,v2,v3)).fetchall() 
-    print(v1,v2,type(v3))
-   
-    
-    # for i in query_results:
-    #     results.append(i.replace("'",""))
-    # results = conn.execute(results).fetchall()
-
     conn.close()
     park_list = []
     for result in query_results[0:150]:
@@ -39,35 +26,24 @@ def fetch_park(text1:str,text2:str,text3:str) -> dict:
             "state_code": result[7],
             "avg_rating": result[8],
             "comments_cnt": result[9],
-            "park_code": result[10]
+            "park_code": result[10],
+            "event_cnt": result[11]
         }
         park_list.append(item)
-
-    if text3=="t1.park_name asc":
-        park_list = sorted(park_list, key=lambda d: d['park_name']) 
-    if text3=="t1.park_name desc":
-        park_list = sorted(park_list, key=lambda d: d['park_name'],reverse=True) 
-    if text3=="t2.avg_rating desc":
-        park_list = sorted(park_list, key=lambda d: d['avg_rating'],reverse=True)   
-    if text3=="t2.avg_rating asc":
-        park_list = sorted(park_list, key=lambda d: d['avg_rating'])  
-    if text3=="t2.comments_cnt desc":
-        park_list = sorted(park_list, key=lambda d: d['comments_cnt'],reverse=True)   
-    if text3=="t2.comments_cnt asc":
-        park_list = sorted(park_list, key=lambda d: d['comments_cnt'])
     return park_list
 
-def fetch_comments() -> dict:
+def fetch_comments(userid:int) -> dict:
     conn = db.connect()
-    query_results = conn.execute("SELECT * from Comments WHERE user_id = 1;").fetchall()
+    query_results = conn.execute("""SELECT id,park_name, rating, comments FROM Comments
+                                    WHERE user_id ={};""".format(userid)).fetchall()
     conn.close()
     comment_list = []
     for result in query_results:
         item = {
             "id": result[0],
-            "park_code": result[2],
-            "rating": result[3],
-            "comments": result[4],
+            "park_name": result[1],
+            "rating": result[2],
+            "comments": result[3],
            
         }
         comment_list.append(item)
@@ -77,7 +53,7 @@ def fetch_comments() -> dict:
 
 def update_park_code(task_id: int, text: str) -> None:
     conn = db.connect()
-    query = 'Update Comments set park_code = "{}" where id = {};'.format(text, task_id)
+    query = 'Update Comments set park_name = "{}" where id = {};'.format(text, task_id)
     conn.execute(query)
     conn.close()
 def update_rating(task_id: int, rating: int) -> None:
@@ -98,18 +74,25 @@ def find_comments(task_id: int) -> None:
     
     query_results = conn.execute(query)
     query_results = [x for x in query_results]
-    old_park_code = query_results[0][2]
+    old_park_name = query_results[0][6]
     old_rating = query_results[0][3]
     old_comments = query_results[0][4]
     conn.close()
-    return ([old_park_code,old_rating,old_comments])
+    return ([old_park_name,old_rating,old_comments])
+####################
+def find_user_id(username:str) -> int:
+    conn = db.connect()
+    query = 'SELECT id FROM Users WHERE username = "{}";'.format(username)
+    query_results = conn.execute(query)
+    query_results = [x for x in query_results]
+    return (query_results[0][0])
 
-
-def insert_new_task(park_code: str,rating: int, text: str) ->  None:
+###
+def insert_new_task(park_name: str,rating: int, text: str, userid:int) ->  None:
     conn = db.connect()
     #     time = datetime.now()
-    query = 'Insert Into Comments (user_id, park_code, rating, comments) VALUES (1,"{}",{}, "{}");'.format(
-        park_code, rating, text)
+    query = 'Insert Into Comments (user_id, park_name, rating, comments) VALUES ({},"{}",{}, "{}");'.format(
+        userid, park_name, rating, text)
     conn.execute(query)
     # query_results = conn.execute("Select LAST_INSERT_ID();")
     # query_results = [x for x in query_results]
@@ -178,3 +161,17 @@ def insert_new_user(username: str,password: str) ->  None:
     # task_id = query_results[0][0]
     conn.close()
     #return task_id
+
+def fetch_all_parks() -> dict:
+    conn = db.connect()
+    query_results = conn.execute("SELECT park_name from Parks;").fetchall()
+    # if query_results:
+    #     return True
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "park_name": result[0]
+        }
+        query_list.append(item)
+    return query_list
