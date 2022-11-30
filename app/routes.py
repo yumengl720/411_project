@@ -205,6 +205,6 @@ def info_f(park_id):
         # redirect to end the POST handling
         # the redirect can be to the same route or somewhere else
         return redirect(url_for('index'))
-
+    items = db_helper.fetch_visit_center(park_id)
     # show the form, it wasn't submitted
-    return render_template('info.html', form = park_id)
+    return render_template('info.html', items = items)

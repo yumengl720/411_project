@@ -15,6 +15,41 @@
      alert("# Rows = " + length);
   }
 </script>
+</div>
 
+<!--Todo Table-->
+<div class="container table-responsive">          
+<table class="table">
+    <thead>
+    <tr>
+        <th class="id">id</th>
+        <th class="image">Image</th>
+        <!-- <th class="contact">Contact</th> -->
+
+
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for item in items %}
+    <tr>
+        
+        <!-- <td><a href={{item.image_url}}></a></td> -->
+        
+        <td>
+            <!--mark changes -->
+            
+            <br></br>
+            <span class="bolded">phone number: </span></th>{{item.phone_number}}
+            <br></br>
+            <span class="bolded">direction: </span></th>{{item.directions}}
+
+        </td>   
+    </tr>
+    {% endfor %}
+    
+    </tbody>
+</table>
+</div>
 </body>
 </html>

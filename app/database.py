@@ -178,3 +178,18 @@ def fetch_all_parks() -> dict:
         }
         query_list.append(item)
     return query_list
+
+def fetch_visit_center(park_code:str) ->  dict:
+    conn = db.connect()
+    query = 'SELECT phone_number, directions FROM Visitorcenters WHERE park_code = "{}";'.format(
+        park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "phone_number": result[0],
+            "directions": result[1]
+        }
+        query_list.append(item)
+    return query_list
