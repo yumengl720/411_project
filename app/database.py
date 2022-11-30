@@ -82,7 +82,10 @@ def find_comments(task_id: int) -> None:
 ####################
 def find_user_id(username:str) -> int:
     conn = db.connect()
-    query = 'SELECT id FROM Users WHERE username = "{}";'.format(username)
+    if username == "":
+        query = 'SELECT id FROM Users;'
+    else:
+        query = 'SELECT id FROM Users WHERE username = "{}";'.format(username)
     query_results = conn.execute(query)
     query_results = [x for x in query_results]
     return (query_results[0][0])

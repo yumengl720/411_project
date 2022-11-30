@@ -214,7 +214,10 @@ alt="Cheetah!" /> -->
             <!-- <td><a href={{item.image_url}}></a></td> -->
             <td><img src={{item.image_url}} alt="" border=0 height=120 width=180></img></th>
             <td>
-                <a href={{item.url}} target="_blank">{{item.park_name}}</a>
+                <!--mark changes -->
+                <a href ="/info" onclick="location.href=this.href+'/'+'park_code='+ '{{item.park_code}}';return false;" target="_blank">{{item.park_name}}</a>
+                 
+                 
                 <br></br>
                 <span class="bolded">Address: </span></th>{{item.address}}
                 <br></br>
@@ -336,7 +339,8 @@ alt="Cheetah!" /> -->
                     <td>{{item.rating}}</td>
                     <td>{{item.comments}}</td>
                     
-                    <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" 
+                    <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" 
+                        data-source="{{item.id}}" 
                         data-park="{{item.park_name}}"
                         data-rating="{{item.rating}}"
                         data-comments="{{item.comments}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>

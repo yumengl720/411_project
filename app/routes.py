@@ -116,10 +116,10 @@ def index():
 
     return render_template("index.html", items=items, items_comment=items_c, item_query1 = item_query1, item_query2 = item_query2,login1=login1, item_park = park_list)
 
-@app.route('/info', methods=['GET','POST'])
-def info():
+# @app.route('/info', methods=['GET','POST'])
+# def info():
     
-    return render_template("info.html")
+#     return render_template("info.html")
 
 
 @app.route("/insert", methods=['POST'])
@@ -194,3 +194,17 @@ def api_response():
     from flask import jsonify
     if request.method == 'POST':
         return jsonify(**requirements.txt)
+
+# mark changes
+@ app.route('/info/park_code=<park_id>', methods=['GET','POST'])
+def info_f(park_id):
+    # park_id = request.args.get('type')
+    if request.method == 'POST':
+        # do stuff when the form is submitted
+
+        # redirect to end the POST handling
+        # the redirect can be to the same route or somewhere else
+        return redirect(url_for('index'))
+
+    # show the form, it wasn't submitted
+    return render_template('info.html', form = park_id)
