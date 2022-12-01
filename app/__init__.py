@@ -8,6 +8,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+from flask_googlemaps import GoogleMaps
 
 
 def init_connect_engine():
@@ -31,6 +32,10 @@ bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 
+
+
+# you can also pass the key here if you prefer
+GoogleMaps(app, key="AIzaSyBQVwV-FLazeVcqHB9EZU42KVMNl0VD0k0")
 
 # login_manager = LoginManager()
 # login_manager.init_app(app)

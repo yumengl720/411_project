@@ -51,20 +51,20 @@ def fetch_comments(userid:int) -> dict:
 
 
 
-def update_park_code(task_id: int, text: str) -> None:
+def update_park_code(task_id: int, text: str ,now) -> None:
     conn = db.connect()
-    query = 'Update Comments set park_name = "{}" where id = {};'.format(text, task_id)
+    query = 'Update Comments set park_name = "{}", update_time = "{}" where id = {};'.format(text, now,task_id)
     conn.execute(query)
     conn.close()
-def update_rating(task_id: int, rating: int) -> None:
+def update_rating(task_id: int, rating: int,now) -> None:
     conn = db.connect()
-    query = 'Update Comments set rating = {} where id = {};'.format(rating, task_id)
+    query = 'Update Comments set rating = {}, update_time = "{}" where id = {};'.format(rating,now, task_id)
     conn.execute(query)
     conn.close()
 
-def update_comments(task_id: int, comments: str) -> None:
+def update_comments(task_id: int, comments: str,now) -> None:
     conn = db.connect()
-    query = 'Update Comments set comments = "{}" where id = {};'.format(comments, task_id)
+    query = 'Update Comments set comments = "{}", update_time = "{}" where id = {};'.format(comments, now,task_id)
     conn.execute(query)
     conn.close()
 
@@ -91,11 +91,12 @@ def find_user_id(username:str) -> int:
     return (query_results[0][0])
 
 ###
-def insert_new_task(park_name: str,rating: int, text: str, userid:int) ->  None:
+def insert_new_task(park_name: str,rating: int, text: str, userid:int, now) ->  None:
+
     conn = db.connect()
     #     time = datetime.now()
-    query = 'Insert Into Comments (user_id, park_name, rating, comments) VALUES ({},"{}",{}, "{}");'.format(
-        userid, park_name, rating, text)
+    query = 'Insert Into Comments (user_id, park_name, rating, comments, update_time) VALUES ({},"{}",{}, "{}","{}");'.format(
+        userid, park_name, rating, text,now)
     conn.execute(query)
     # query_results = conn.execute("Select LAST_INSERT_ID();")
     # query_results = [x for x in query_results]
@@ -181,7 +182,7 @@ def fetch_all_parks() -> dict:
 
 def fetch_visit_center(park_code:str) ->  dict:
     conn = db.connect()
-    query = 'SELECT phone_number, directions FROM Visitorcenters WHERE park_code = "{}";'.format(
+    query = 'SELECT DISTINCT phone_number, facility_name, description, standard_hours, url FROM Visitorcenters WHERE park_code = "{}";'.format(
         park_code)
     query_results = conn.execute(query).fetchall()
     conn.close()
@@ -189,7 +190,119 @@ def fetch_visit_center(park_code:str) ->  dict:
     for result in query_results:
         item = {
             "phone_number": result[0],
-            "directions": result[1]
+            "facility_name": result[1],
+            "description": result[2],
+            "standard_hours": result[3],
+            "url": result[4]
+        }
+        query_list.append(item)
+    return query_list
+
+def fetch_image_url(park_code: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT image_url FROM Parks WHERE park_code = "{}" limit 1;'.format(
+        park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "image_url": result[0]
+        }
+        query_list.append(item)
+    return query_list
+
+def fetch_basic(park_code: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT DISTINCT description,standard_hour,entrance_fee,url FROM Parks WHERE park_code = "{}";'.format(
+        park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "description": result[0],
+            "standard_hour": result[1],
+            "entrance_fee": result[2],
+            "url": result[3]
+        }
+        query_list.append(item)
+    return query_list
+
+def fetch_park_name(park_code: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT park_name FROM Parks WHERE park_code = "{}" limit 1;'.format(
+        park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "park_name": result[0]
+        }
+        query_list.append(item)
+    return query_list
+
+def fetch_event(park_code: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT title, regres_url, dates,description FROM Events WHERE park_name = (SELECT park_name FROM Parks WHERE park_code  = "{}") '.format(park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "title": result[0],
+            "regres_url": result[1],
+            "dates": result[2],
+            "description": result[3]
+        }
+        query_list.append(item)
+    return query_list
+
+def fetch_alerts(park_code: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT category, description, title, url FROM Alerts WHERE park_code = "{}" and title IS NOT NULL;'.format(park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "category": result[0],
+            "description": result[1],
+            "title": result[2],
+            "url": result[3]
+        }
+        query_list.append(item)
+    return query_list
+
+def park_comments(park_code: str) -> dict:
+    conn = db.connect()
+    query = 'SELECT user_id,comments, rating,update_time FROM Comments  WHERE park_code = "{}";'.format(park_code)
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "user_id": result[0],
+            "comments": result[1],
+            "rating": result[2],
+            "update_time": result[3]
+        }
+        query_list.append(item)
+    return query_list
+
+def fetch_position() -> dict:
+    conn = db.connect()
+    query = 'SELECT latitude, longitude, park_name, park_code FROM Parks WHERE park_name != "Blackwell School National Historic Site"; '
+    query_results = conn.execute(query).fetchall()
+    conn.close()
+    query_list = []
+    for result in query_results:
+        item = {
+            "lat": result[0],
+            "lon": result[1],
+            "popup": result[2],
+            "park_code":result[3]
         }
         query_list.append(item)
     return query_list

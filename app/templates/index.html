@@ -9,7 +9,7 @@
         <ul>
           <li><a href="#home" class="scroll">Home</a ></li>
           <li><a href="#comments" class="scroll">Comments</a ></li>
-          <li><a href="#results" class="scroll">Results of SQL Query</a ></li>
+            <li><a href ="/fullmap" >Map</a></li>
           <!-- <li><a href="{{ url_for('login') }}" class="btn btn-primary">Login</a></li> -->
         
           <li><ul class="btn btn-primary">
@@ -49,10 +49,13 @@ alt="Cheetah!" /> -->
     </head>
 
     <body>
+        
+
 
     <main role="main" class="container extra-bottom">
       <h2 class="mt-5">National Parks in The USA</h2>
       <br><br>
+
       
       <!-- <p><mark>Do it now.</mark></p > -->
       <form method="POST">
@@ -370,84 +373,5 @@ alt="Cheetah!" /> -->
       </section>
 
 {%endif%}
-
-
-      <section id="results">
-        <body>
-                <main role="main" class="container extra-bottom">
-                    <h2 class="mt-5">Query 1</h2>
-                    <br><br>
-                    <!-- <p><mark>Do it now.</mark></p > -->
-                    <form method="POST">
-                  </form>
-                  </main>
-          
-                  <!--Todo Table-->
-                  <div class="container table-responsive">          
-                  <table class="table">
-                      <thead>
-                      <tr>
-          
-                          <th class="park_code">Park Code</th>
-                          <th class="avg_rating">Avg Ratings</th>
-              
-                      </tr>
-                      </thead>
-              
-                      <tbody>
-                      {% for item in item_query1 %}
-                          <tr>
-                              <td>{{item.park_code}}</td>
-                              <td>{{item.avg_rating}}</td>             
-                          </tr>
-                      {% endfor %}
-                      
-                      </tbody>
-                  </table>
-            </div>
-
-
-  <br><br>
-        <main role="main" class="container extra-bottom">
-            <h2 class="mt-5">Query 2</h2>
-            <br><br>
-            <!-- <p><mark>Do it now.</mark></p > -->
-            <form method="POST">
-          </form>
-          </main>
-
-          <!--Todo Table-->
-          <div class="container table-responsive">          
-          <table class="table">
-              <thead>
-              <tr>
-  
-                  <th class="event_id">Event ID</th>
-                  <th class="park_name">Park Name</th>
-                  <th class="comment_cnt">Comment Counts</th>
-      
-              </tr>
-              </thead>
-      
-              <tbody>
-              {% for item in item_query2 %}
-                  <tr>
-                      <td>{{item.event_id}}</td>
-                      <td>{{item.park_name}}</td>  
-                      <td>{{item.comment_cnt}}</td>            
-                  </tr>
-              {% endfor %}
-              
-              </tbody>
-          </table>
-         </div>   
-
-
-      </body>     
-    </section>
-
-    
-   
-    
 
 </html>

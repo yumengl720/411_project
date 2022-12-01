@@ -42,7 +42,7 @@ $(document).ready(function () {
         // console.log($('#task-modal').find('.form-control3').val())
         $.ajax({
             type: 'POST',
-            url: cID ? '/edit/' + cID : '/insert',
+            url: cID ? '/edit/'+cID : '/insert',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
                  'park_name':$('#task-modal').find('.form-control1').val(),

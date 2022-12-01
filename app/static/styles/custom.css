@@ -81,16 +81,42 @@ html {
     background: #d6c9b0;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   #comments{
     background: #f1d5ab;
     display: flex;
     flex-direction: column;
+    align-content: center;
+ 
   }
-  #results{
+  #basic{
+    
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+  }
+  #visitor{
     background: #e9d8ab;
     display: flex;
     flex-direction: column;
+    align-content: center;
+
+  }
+  #events{
+    background: #e9d8ab;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+  }
+  #alerts{
+    background: #e9d8ab;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
   }
 
 body {
@@ -146,6 +172,7 @@ h2 {
 
 .extra-bottom {
     padding-bottom: 2em;
+    text-align: center;
 }
 
 
@@ -212,5 +239,13 @@ h2 {
   overflow-y:auto;
   height: 16px;
   clear: both;
+}
+
+.subtitle{
+  margin: auto;
+  text-align: center;
+  font-size: 35px;
+  font-weight: bold;
+  /* width: 60%; */
 }
 

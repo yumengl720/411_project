@@ -3,13 +3,17 @@ from flask import render_template, request, jsonify, url_for, redirect, Flask,se
 from app import app
 from app import database as db_helper
 # from app import User as User
-
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map, icons
+import ast
+import re
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -69,16 +73,17 @@ def update(task_id):
     """ recieved post requests for entry updates """
     old_record = db_helper.find_comments(task_id)
     data = request.get_json()
+    now = datetime.now()
     try:
         response1,response2,response3 = '','',''
         if (data["park_name"]!=old_record[0]):
-            db_helper.update_park_code(task_id, data["park_name"])
+            db_helper.update_park_code(task_id, data["park_name"],now)
             response1 = "Park Code Updated"
         if (data["rating"]!=old_record[1]):
-            db_helper.update_rating(task_id, data["rating"])
+            db_helper.update_rating(task_id, data["rating"],now)
             response2 = 'Rating Updated'
         if (data["comments"]!=old_record[2]):
-            db_helper.update_comments(task_id, data["comments"])
+            db_helper.update_comments(task_id, data["comments"],now)
             response3 = 'comments Updated'
         
         result = {'success': True, 'response': response1 + " " + response2 + " " + response3}
@@ -114,7 +119,9 @@ def index():
 
     park_list = db_helper.fetch_all_parks()
 
-    return render_template("index.html", items=items, items_comment=items_c, item_query1 = item_query1, item_query2 = item_query2,login1=login1, item_park = park_list)
+
+
+    return render_template("index.html", items=items, items_comment=items_c, login1=login1, item_park = park_list)
 
 # @app.route('/info', methods=['GET','POST'])
 # def info():
@@ -132,7 +139,8 @@ def create():
         username = session['username']
     userid = db_helper.find_user_id(username)
     data = request.get_json()
-    db_helper.insert_new_task(data['park_name'], data['rating'], data['comments'],userid)
+    now = datetime.now()
+    db_helper.insert_new_task(data['park_name'], data['rating'], data['comments'],userid,now)
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 
@@ -205,6 +213,47 @@ def info_f(park_id):
         # redirect to end the POST handling
         # the redirect can be to the same route or somewhere else
         return redirect(url_for('index'))
-    items = db_helper.fetch_visit_center(park_id)
+    
+    items_visit = db_helper.fetch_visit_center(park_id)
+    for record in items_visit:
+        record['standard_hours'] = eval(record['standard_hours'].decode("utf-8"))
+        record['standard_hours'] = {k.title(): v for k, v in record['standard_hours'].items()}
+
+    park_name = db_helper.fetch_park_name(park_id)
+    
+    image_url = db_helper.fetch_image_url(park_id)
+    
+    item_b = db_helper.fetch_basic(park_id)
+    item_b[0]['standard_hour'] = eval(item_b[0]['standard_hour'].decode("utf-8"))
+    item_b[0]['standard_hour'] = {k.title(): v for k, v in item_b[0]['standard_hour'].items()}
+    item_b[0]['entrance_fee'] = eval(item_b[0]['entrance_fee'].decode("utf-8"))
+    item_b[0]['entrance_fee'] = [{k.title(): v for k, v in x.items()} for x in item_b[0]['entrance_fee']]
+
+    item_e = db_helper.fetch_event(park_id)
+    start = re.escape("<")
+    end = re.escape(">")
+    pattern = '%s(.*?)%s' % (start, end)
+    for record in item_e:
+        record['dates'] = eval(record['dates'].decode("utf-8"))
+        record['description']= re.sub(pattern, '', record['description'])
+ 
+
+    item_a = db_helper.fetch_alerts(park_id)
+
+    item_c = db_helper.park_comments(park_id)
+    
     # show the form, it wasn't submitted
-    return render_template('info.html', items = items)
+    return render_template('info.html',  image_url = image_url, item_basic = item_b,park_name = park_name, items_visit=items_visit,item_e=item_e, item_a=item_a, item_c = item_c)
+
+
+@app.route("/fullmap")
+def root():
+
+    items = db_helper.fetch_position()
+    for record in items:
+        record['lat'] = re.sub('"', '', record['lat'])
+        record['lat'] = float(record['lat'])
+        record['lon'] = re.sub('"', '', record['lon'])
+        record['lon'] = float(record['lon'])
+
+    return render_template('map.html',markers=items)

@@ -1,0 +1,37 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+    width: 100vw;
+    margin-bottom: 2em;
+
+}
+/* .homepage{
+    width: 90%;
+    margin: 10 auto;
+    transition: all ease-in-out 0.5s;
+    text-align: right;
+    font-size: 30px;
+  } */
+
+  head{
+    position: fixed;
+    width: 100%;
+    background: rgba(38, 50, 56, 0.5);
+    padding: 10px 0;
+    z-index: 1;
+    transition: all ease-in-out 0.5s;
+  }
+  .homepage{
+    
+    width: 100%;
+    background: rgba(38, 50, 56, 0.5);
+    padding: 10px 0;
+    z-index: 1;
+    transition: all ease-in-out 0.5s;
+    color: white;
+    font-size: 30px;
+    margin-right: 20px;
+  }
