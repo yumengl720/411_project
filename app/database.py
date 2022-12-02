@@ -14,7 +14,7 @@ def fetch_park(text1:str,text2:str,text3:str) -> dict:
     query_results = conn.execute(query,(v1,v2,v3)).fetchall() 
     conn.close()
     park_list = []
-    for result in query_results[0:150]:
+    for result in query_results:
         item = {
             "id": result[0],
             "image_url": result[1],
@@ -28,6 +28,30 @@ def fetch_park(text1:str,text2:str,text3:str) -> dict:
             "comments_cnt": result[9],
             "park_code": result[10],
             "event_cnt": result[11]
+        }
+        park_list.append(item)
+    return park_list
+
+def fetch_park_without_rating() -> dict:
+    conn = db.connect()
+
+    query = """SELECT id,image_url,park_name,address,entrance_fee,phone_number,url, 'NA' AS avg_rating, 'NA' AS comments_cnt, 'NA' AS event_cnt, park_code from Parks"""
+    query_results = conn.execute(query).fetchall() 
+    conn.close()
+    park_list = []
+    for result in query_results:
+        item = {
+            "id": result[0],
+            "image_url": result[1],
+            "park_name": result[2], 
+            "address": literal_eval(result[3])[0]["line1"]+", "+literal_eval(result[3])[0]["line2"]+literal_eval(result[3])[0]["line3"]+literal_eval(result[3])[0]["city"]+", "+literal_eval(result[3])[0]["stateCode"]+", "+literal_eval(result[3])[0]["postalCode"],
+            "entrance_fee": result[4],
+            "contact": result[5],
+            "url": result[6],
+            "avg_rating": result[7],
+            "comments_cnt": result[8],
+            "event_cnt": result[9],
+            "park_code":result[10]
         }
         park_list.append(item)
     return park_list

@@ -101,12 +101,15 @@ def index():
     if 'username' in session:
         login1 = True
         username = session['username']
-    items = db_helper.fetch_park('','','')
+    items = db_helper.fetch_park_without_rating()
     if request.method == 'POST':
         variable1 = request.form['variable1']
         variable2 = request.form['variable2']
         variable3 = request.form['variable3']
-        items = db_helper.fetch_park(variable1,variable2,variable3)
+        if variable1=="" and variable2=="" and variable3=="":
+            items = db_helper.fetch_park_without_rating()
+        else:
+            items = db_helper.fetch_park(variable1,variable2,variable3)
     
     # username = username
     userid = db_helper.find_user_id(username)
