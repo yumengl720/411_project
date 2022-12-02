@@ -1,3 +1,7 @@
+# external IP address:
+http://34.123.109.80:5000/
+
+
 # A Todo List demo App
 This is a todo list demo designed for CS411. 
 # Tutorial
