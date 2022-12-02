@@ -35,7 +35,7 @@ def fetch_park(text1:str,text2:str,text3:str) -> dict:
 def fetch_park_without_rating() -> dict:
     conn = db.connect()
 
-    query = """SELECT id,image_url,park_name,address,entrance_fee,phone_number,url, 'NA' AS avg_rating, 'NA' AS comments_cnt, 'NA' AS event_cnt from Parks"""
+    query = """SELECT id,image_url,park_name,address,entrance_fee,phone_number,url, 'NA' AS avg_rating, 'NA' AS comments_cnt, 'NA' AS event_cnt, park_code from Parks"""
     query_results = conn.execute(query).fetchall() 
     conn.close()
     park_list = []
@@ -50,7 +50,8 @@ def fetch_park_without_rating() -> dict:
             "url": result[6],
             "avg_rating": result[7],
             "comments_cnt": result[8],
-            "event_cnt": result[9]
+            "event_cnt": result[9],
+            "park_code":result[10]
         }
         park_list.append(item)
     return park_list
