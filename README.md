@@ -1,4 +1,4 @@
-# external IP address:
+# External IP address:
 http://34.123.109.80:5000/
 
 
